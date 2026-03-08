@@ -480,3 +480,141 @@ This version safely updates dictionary values and correctly returns sorted frequ
 * Sorting dictionaries
 * Debugging common Python dictionary errors
 
+# Day 10 — Part D
+
+## AI-Augmented Task
+
+### Overview
+
+In this section, an AI tool was used to generate Python code for merging student grade dictionaries from two semesters.
+The task required analyzing the AI-generated code, evaluating its correctness, and improving it to handle real-world cases.
+
+The goal was to produce a report containing:
+
+* Combined student grade information
+* Grade trend (improving / declining / stable)
+* Subjects common to both semesters
+
+---
+
+## Prompt Used
+
+```
+Write a Python function that takes two dictionaries representing student grades from two different semesters and produces a merged report showing: combined GPA, grade trend (improving/declining/stable), and subjects common to both semesters. Use defaultdict and dict comprehension.
+```
+
+---
+
+## AI Generated Code
+
+```python
+from collections import defaultdict
+
+def grade_report(sem1, sem2):
+
+    report = defaultdict(dict)
+
+    subjects = set(sem1) | set(sem2)
+
+    for sub in subjects:
+        g1 = sem1.get(sub)
+        g2 = sem2.get(sub)
+
+        report[sub]["sem1"] = g1
+        report[sub]["sem2"] = g2
+
+    return report
+```
+
+---
+
+## Critical Evaluation
+
+### Handling Missing Subjects
+
+The AI code uses `.get()` which avoids `KeyError`, but it does not explicitly handle missing subjects in the final report.
+
+---
+
+### Safe Dictionary Access
+
+Yes.
+The code uses `.get()` which safely retrieves values even when the key does not exist.
+
+---
+
+### Trend Calculation
+
+The generated code does **not calculate the grade trend** (improving, declining, or stable).
+This is a major requirement missing from the AI solution.
+
+---
+
+### Edge Case Handling
+
+The AI code does not handle:
+
+* Empty dictionaries
+* Cases where a subject appears in only one semester
+* GPA calculation
+
+---
+
+### Code Quality
+
+The code structure is reasonable but it does not fully use **dictionary comprehensions** or provide a complete report structure.
+
+---
+
+## Improved Implementation
+
+```python
+from collections import defaultdict
+
+def merge_grades(sem1: dict, sem2: dict) -> dict:
+
+    report = defaultdict(dict)
+
+    subjects = set(sem1) | set(sem2)
+
+    for subject in subjects:
+
+        g1 = sem1.get(subject)
+        g2 = sem2.get(subject)
+
+        if g1 is not None and g2 is not None:
+            if g2 > g1:
+                trend = "improving"
+            elif g2 < g1:
+                trend = "declining"
+            else:
+                trend = "stable"
+        else:
+            trend = "insufficient data"
+
+        report[subject] = {
+            "semester1": g1,
+            "semester2": g2,
+            "trend": trend
+        }
+
+    common_subjects = list(set(sem1) & set(sem2))
+
+    return {
+        "subjects": dict(report),
+        "common_subjects": common_subjects
+    }
+```
+
+---
+
+## Concepts Used
+
+* `defaultdict`
+* Safe dictionary access using `.get()`
+* Dictionary merging
+* Set operations
+* Edge case handling
+* Trend analysis
+
+
