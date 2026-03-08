@@ -280,3 +280,203 @@ python part_B_log_analyzer.py
 ```
 
 The script will analyze the simulated logs and display the summary statistics.
+# Day 10 — Part C
+
+## Interview Ready (Concept + Coding + Debugging)
+
+### Overview
+
+Part C focuses on **interview-level understanding of Python dictionaries** and problem-solving using dictionary-based algorithms.
+
+This section includes:
+
+1. Conceptual explanation of dictionary time complexity
+2. Coding problem: grouping anagrams
+3. Debugging a dictionary frequency counter
+
+---
+
+## Q1 — Dictionary Time Complexity
+
+Python dictionaries are implemented using **hash tables**, which allow very fast operations.
+
+### Lookup
+
+Average Time Complexity:
+
+```
+O(1)
+```
+
+A key is passed through a **hash function** which maps it directly to a memory location.
+
+---
+
+### Insert
+
+Average Time Complexity:
+
+```
+O(1)
+```
+
+The key is hashed and placed into the appropriate bucket.
+
+---
+
+### Delete
+
+Average Time Complexity:
+
+```
+O(1)
+```
+
+The dictionary finds the key using hashing and removes it.
+
+---
+
+### Worst Case Complexity
+
+Worst case becomes:
+
+```
+O(n)
+```
+
+This happens when **many hash collisions occur**, meaning multiple keys map to the same index.
+
+Python handles collisions using **open addressing and probing**.
+
+---
+
+### Hash Function Behavior
+
+For integers:
+
+```
+hash(x) = x
+```
+
+For strings:
+
+Python computes a **polynomial rolling hash** based on character values.
+
+---
+
+### When to Use a Dictionary Instead of a List
+
+Use a **dictionary** when:
+
+* Fast lookups are required
+* Data is stored as **key → value pairs**
+* Unique identifiers are used
+
+Use a **list** when:
+
+* Order matters
+* Access is index-based
+* Duplicate values are allowed
+
+---
+
+## Q2 — Group Anagrams
+
+Two words are **anagrams** if they contain the same characters in a different order.
+
+Example:
+
+```
+eat → tea → ate
+```
+
+### Python Implementation
+
+```python
+from collections import defaultdict
+
+def group_anagrams(words):
+
+    groups = defaultdict(list)
+
+    for word in words:
+        key = ''.join(sorted(word))
+        groups[key].append(word)
+
+    return dict(groups)
+
+
+print(group_anagrams(['eat','tea','tan','ate','nat','bat']))
+```
+
+### Output
+
+```
+{
+ 'aet': ['eat','tea','ate'],
+ 'ant': ['tan','nat'],
+ 'abt': ['bat']
+}
+```
+
+Concepts used:
+
+* `defaultdict`
+* sorting characters to build a unique key
+* grouping values by dictionary key
+
+---
+
+## Q3 — Debugging Character Frequency Code
+
+### Buggy Code
+
+```python
+def char_freq(text):
+    freq = {}
+    for char in text:
+        freq[char] += 1
+    sorted_freq = sorted(freq, key=freq.get, reverse=True)
+    return sorted_freq
+```
+
+---
+
+### Problems
+
+**Bug 1 — KeyError**
+
+`freq[char] += 1` fails when the character appears for the first time.
+
+**Bug 2 — Incorrect Return Value**
+
+The code returns only keys instead of `(character, frequency)` pairs.
+
+---
+
+### Corrected Version
+
+```python
+def char_freq(text):
+
+    freq = {}
+
+    for char in text:
+        freq[char] = freq.get(char,0) + 1
+
+    sorted_freq = sorted(freq.items(), key=lambda x: x[1], reverse=True)
+
+    return sorted_freq
+```
+
+This version safely updates dictionary values and correctly returns sorted frequency pairs.
+
+---
+
+### Concepts Used
+
+* Dictionary hashing
+* `defaultdict`
+* Sorting dictionaries
+* Debugging common Python dictionary errors
+
