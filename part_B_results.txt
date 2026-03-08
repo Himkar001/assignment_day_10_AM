@@ -1,0 +1,16 @@
+Total log entries: 6
+
+Log level distribution:
+INFO: 2
+ERROR: 2
+WARNING: 1
+CRITICAL: 1
+
+Most common errors:
+Connection failed (2)
+
+Most active module:
+db
+
+Errors grouped by module:
+db -> Connection failed
