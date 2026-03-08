@@ -1,0 +1,21 @@
+search_by_tag("fashion")
+['Tshirt','Jeans','Sneakers']
+
+out_of_stock()
+Headphones
+Jacket
+Novel
+Chips
+
+price_range(500,2000)
+Headphones
+Tshirt
+Jeans
+Python Book
+
+category_summary()
+
+electronics
+clothing
+books
+food
